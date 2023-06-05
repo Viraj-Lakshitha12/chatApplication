@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="563.0" prefWidth="735.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.chatApplication.controller.ClientFormController">
+   <children>
+      <Pane fx:id="topPane" layoutX="2.0" layoutY="1.0" prefHeight="45.0" prefWidth="733.0" style="-fx-background-color: #2980b9;">
+         <children>
+            <Label fx:id="lblNameText" layoutX="16.0" layoutY="8.0" text="Play Tech Pvt Ltd.">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font></Label>
+         </children></Pane>
+      <Pane fx:id="bottomPane1" layoutX="3.0" layoutY="505.0" prefHeight="56.0" prefWidth="733.0" styleClass="bottomPane" stylesheets="@../assets/styles/style.css">
+         <children>
+            <JFXButton layoutX="23.0" layoutY="-1.0" prefHeight="56.0" prefWidth="65.0" text=" " />
+            <ImageView fitHeight="56.0" fitWidth="65.0" layoutX="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/images/icons8-image-64.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="txtSendMessage" layoutX="103.0" layoutY="11.0" prefHeight="38.0" prefWidth="508.0" promptText="                                            Type Message Here" style="-fx-background-color: E8E8E8; -fx-background-radius: 20; -fx-border-radius: 20;" />
+            <Button layoutX="641.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnSendMessageOnAction" style="-fx-background-color: #2980b9; -fx-background-radius: 8;" text="SEND">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <TextArea fx:id="textArea" layoutX="3.0" layoutY="46.0" prefHeight="457.0" prefWidth="733.0" style="-fx-background-color: white;" />
+   </children>
+</AnchorPane>
