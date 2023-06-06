@@ -1,6 +1,8 @@
 package lk.ijse.chatApplication.controller;
 
 
+import lk.ijse.chatApplication.Clients;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,17 +19,20 @@ public class ServerFormController {
     public void startServer(){
         new Thread(() -> {
             try {
-                serverSocket = new ServerSocket(3125);
+                serverSocket = new ServerSocket(1234);
                 System.out.println("Server Start");
-                socket = serverSocket.accept();
-                System.out.println("\nClient Accept");
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                    while (true) {
-                        s = dataInputStream.readUTF();
-                        System.out.println(s);
-                    }
+                while (true){
+                    socket = serverSocket.accept();
+                    System.out.println("\nClient Accept");
+
+                    Clients clients = new Clients(serverSocket.accept());
+                    Thread clientThread = new Thread(clients);
+                    clientThread.start();
+                }
+//                dataInputStream = new DataInputStream(socket.getInputStream());
+//                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -35,16 +40,4 @@ public class ServerFormController {
     }
 
 
-    public void closeServer(){
-        if (serverSocket == null){
-            try {
-                dataOutputStream.close();
-                dataInputStream.close();
-                socket.close();
-                serverSocket.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 }

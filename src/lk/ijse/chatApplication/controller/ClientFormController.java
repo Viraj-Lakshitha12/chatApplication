@@ -14,14 +14,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import lk.ijse.chatApplication.Clients;
 
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
-import static java.awt.ComponentOrientation.*;
 
 public class ClientFormController {
 
@@ -36,47 +35,67 @@ public class ClientFormController {
     @FXML
     private Pane bottomPane;
     Socket socket;
+    final int PORT = 1234;
+    static String username;
     DataOutputStream dataOutputStream;
     DataInputStream dataInputStream;
     private final LoginFormFormController loginFormFormController = new LoginFormFormController();
 
-    String message;
+    String  message ="";
     public void initialize(){
+        try {
+            socket = new Socket("localhost",PORT);
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream.writeUTF(username);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         new Thread(() ->{
             try {
-                socket = new Socket("localhost",3125);
-                System.out.println("Client Start");
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                message ="";
-                 String userName = loginFormFormController.getUserName();
-                System.out.println(userName);
-                while (!message.equals("end")){
-                    textArea.appendText("\n"+userName);
+                while (true){
                     message = dataInputStream.readUTF();
-                    textArea.appendText("\n"+message);
+                    Text text = new Text(message);
+                    TextFlow textFlow = new TextFlow(text);
+                    textArea.appendText("\n"+textFlow);
                 }
-                socket.close();
-                dataOutputStream.close();
-                dataInputStream.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                closeEverything(socket,dataInputStream,dataOutputStream);
+                e.printStackTrace();
             }
+
         }).start();
 
     }
+    public void closeEverything(Socket socket, DataInputStream dataInputStream, DataOutputStream dataOutputStream){
+        try {
+            if (dataInputStream !=null){
+                dataInputStream.close();
+            }
+            if (dataOutputStream!=null){
+                dataOutputStream.close();
+            }
 
+            if (socket !=null){
+                socket.close();
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     public void btnSendMessageOnAction(ActionEvent actionEvent) {
         String messageToSend = txtSendMessage.getText().trim();
         try {
             dataOutputStream.writeUTF(messageToSend);
-//            textArea.setPadding(new Insets(5,10,5,10));
             textArea.appendText("\nMe :"+messageToSend);
             dataOutputStream.flush();
             txtSendMessage.clear();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+
 }
