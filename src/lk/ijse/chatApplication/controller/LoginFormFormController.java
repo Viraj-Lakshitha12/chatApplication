@@ -23,5 +23,7 @@ public class LoginFormFormController {
         Parent load = FXMLLoader.load(resource);
         primaryStage.setScene(new Scene(load));
         primaryStage.show();
+        txtUserName.clear();
+        txtUserName.requestFocus();
     }
 }

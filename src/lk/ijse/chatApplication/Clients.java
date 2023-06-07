@@ -32,7 +32,7 @@ public class Clients implements Runnable {
             clients.add(this);
 
         } catch (IOException e) {
-            closeEverything(socket,dataInputStream,dataOutputStream);
+            closeEverything(socket,dataInputStream,dataOutputStream,dataInputStream2,dataOutputStream2);
             e.printStackTrace();
         }
     }
@@ -47,14 +47,14 @@ public class Clients implements Runnable {
             try {
                 sendMessageClientEnter(this, dataInputStream.readUTF());
             } catch (IOException e) {
-                closeEverything(socket,dataInputStream,dataOutputStream);
+                closeEverything(socket,dataInputStream,dataOutputStream,dataInputStream2,dataOutputStream2);
                 break;
             }
         }
     }
     public void removeClientHandler(){
         clients.remove(this);
-        sendMessageClientEnter(this, " has left the chat ! ");
+        sendMessageClientEnter(this, " \nhas left the chat ! ");
 
     }
     private void sendMessageClientEnter(Clients client, String messageTo) {
@@ -65,19 +65,23 @@ public class Clients implements Runnable {
                     clients1.dataOutputStream.flush();
                 }
             } catch (IOException e) {
-                closeEverything(socket,dataInputStream,dataOutputStream);
             }
         }
     }
 
-    public void closeEverything(Socket socket, DataInputStream dataInputStream, DataOutputStream dataOutputStream){
-        removeClientHandler();
-        try{
+    public void closeEverything(Socket socket, DataInputStream dataInputStream, DataOutputStream dataOutputStream,DataInputStream dataInputStream2,DataOutputStream dataOutputStream2){
+        try {
             if (dataInputStream !=null){
                 dataInputStream.close();
             }
             if (dataOutputStream!=null){
                 dataOutputStream.close();
+            }
+            if (dataInputStream2 !=null){
+                dataInputStream2.close();
+            }
+            if (dataOutputStream2!=null){
+                dataOutputStream2.close();
             }
             if (socket !=null){
                 socket.close();

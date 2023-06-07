@@ -1,3 +1,8 @@
 .bottomPane{
     -fx-background-color: #ffffff;
 }
+
+.txt{
+    -fx-text-alignment: left;
+    -fx-background-color: #474bff;
+}
