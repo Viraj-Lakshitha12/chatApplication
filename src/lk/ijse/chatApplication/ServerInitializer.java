@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import lk.ijse.chatApplication.controller.ServerFormController;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.URL;
 
 public class ServerInitializer extends Application {
@@ -18,7 +19,10 @@ public class ServerInitializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        ServerFormController serverFormController = new ServerFormController();
+        ServerSocket serverSocket = new ServerSocket(1234);
+        ServerSocket serverSocket2 = new ServerSocket(1235);
+        System.out.println("Server is Running");
+        ServerFormController serverFormController = new ServerFormController(serverSocket,serverSocket2);
         serverFormController.startServer();
     }
 }

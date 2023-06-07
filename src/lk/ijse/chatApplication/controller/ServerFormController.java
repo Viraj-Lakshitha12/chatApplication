@@ -10,34 +10,25 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerFormController {
-    ServerSocket serverSocket;
-    DataInputStream dataInputStream;
-    DataOutputStream dataOutputStream;
-    Socket socket;
-    String s = "";
+    private ServerSocket serverSocket;
+    private ServerSocket serverSocket2;
 
+    public ServerFormController(ServerSocket serverSocket,ServerSocket serverSocket2){
+        this.serverSocket =serverSocket;
+        this.serverSocket2 =serverSocket2;
+    }
     public void startServer(){
-        new Thread(() -> {
-            try {
-                serverSocket = new ServerSocket(1234);
-                System.out.println("Server Start");
-
                 while (true){
-                    socket = serverSocket.accept();
-                    System.out.println("\nClient Accept");
+                    try {
+                        Clients clients = new Clients(serverSocket.accept(),serverSocket2.accept());
+                        Thread thread = new Thread(clients);
+                        thread.start();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                    Clients clients = new Clients(serverSocket.accept());
-                    Thread clientThread = new Thread(clients);
-                    clientThread.start();
                 }
 //                dataInputStream = new DataInputStream(socket.getInputStream());
 //                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
     }
-
-
 }

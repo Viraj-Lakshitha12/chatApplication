@@ -35,30 +35,30 @@ public class ClientFormController {
     @FXML
     private Pane bottomPane;
     Socket socket;
+    Socket socket2;
     final int PORT = 1234;
+    final int PORT2 = 1235;
     static String username;
     DataOutputStream dataOutputStream;
     DataInputStream dataInputStream;
-    private final LoginFormFormController loginFormFormController = new LoginFormFormController();
-
+    DataInputStream dataInputStream2;
+    DataOutputStream dataOutputStream2;
     String  message ="";
-    public void initialize(){
-        try {
-            socket = new Socket("localhost",PORT);
-            dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            dataOutputStream.writeUTF(username);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void initialize() throws IOException {
+        socket = new Socket("localhost",PORT);
+        dataInputStream = new DataInputStream(socket.getInputStream());
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataOutputStream.writeUTF(username);
+
+        socket2 = new Socket("localhost",PORT2);
+        dataInputStream2 = new DataInputStream(socket2.getInputStream());
+        dataOutputStream2 = new DataOutputStream(socket2.getOutputStream());
 
         new Thread(() ->{
             try {
                 while (true){
                     message = dataInputStream.readUTF();
-                    Text text = new Text(message);
-                    TextFlow textFlow = new TextFlow(text);
-                    textArea.appendText("\n"+textFlow);
+                    textArea.appendText("\n"+message);
                 }
             } catch (IOException e) {
                 closeEverything(socket,dataInputStream,dataOutputStream);
