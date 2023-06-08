@@ -20,6 +20,7 @@ public class AppInitializer extends Application {
         URL resource = getClass().getResource("/lk/ijse/chatApplication/view/LoginForm.fxml");
         Parent load = FXMLLoader.load(resource);
         primaryStage.setScene(new Scene(load));
+        primaryStage.setTitle("Login Form");
         primaryStage.show();
     }
 }

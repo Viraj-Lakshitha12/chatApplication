@@ -26,7 +26,7 @@
                   </LinearGradient>
                </textFill>
             </Label>
-            <JFXTextField fx:id="txtUserName" layoutX="30.0" layoutY="182.0" prefHeight="31.0" prefWidth="312.0" promptText="                         User Name" style="-fx-background-color: white; -fx-background-radius: 10;" unFocusColor="#fffafa">
+            <JFXTextField fx:id="txtUserName" layoutX="30.0" layoutY="182.0" onAction="#txtLoginOnAction" prefHeight="31.0" prefWidth="312.0" promptText="                         User Name" style="-fx-background-color: white; -fx-background-radius: 10;" unFocusColor="#fffafa">
                <focusColor>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>

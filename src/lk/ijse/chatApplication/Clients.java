@@ -22,7 +22,6 @@ public class Clients implements Runnable {
             this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
             this.dataInputStream = new DataInputStream(socket.getInputStream());
 
-
             this.socket2 = socket2;
             this.dataOutputStream2 = new DataOutputStream(socket2.getOutputStream());
             this.dataInputStream2 = new DataInputStream(socket2.getInputStream());
@@ -40,6 +39,7 @@ public class Clients implements Runnable {
     @Override
     public void run() {
         IncomingMessage();
+        IncomingImages();
     }
 
     private void IncomingMessage() {
@@ -52,7 +52,39 @@ public class Clients implements Runnable {
             }
         }
     }
-    public void removeClientHandler(){
+    private void IncomingImages() {
+        new Thread(() -> {
+            while (socket.isConnected()) {
+                try {
+
+                    int readInt = dataInputStream2.readInt();
+                    byte[] bytes = new byte[readInt];
+                    dataInputStream2.readFully(bytes,0,readInt);
+                    sendMessageClientImage(this,readInt,bytes);
+
+                } catch (IOException e) {
+
+                }
+            }
+        }).start();
+    }
+
+    private void sendMessageClientImage(Clients client, int i, byte[] bytes) {
+        for (Clients clients1 : clients) {
+            try {
+                if (clients1 != client) {
+                    // clientHandler.dataOutputStream.writeUTF(clientUserName);
+                    //   clientHandler.dataOutputStream.flush();
+                    clients1.dataOutputStream2.writeInt(i);
+                    clients1.dataOutputStream2.write(bytes);
+                }
+
+            } catch (IOException e) {
+
+            }
+        }
+    }
+    public void removeClient(){
         clients.remove(this);
         sendMessageClientEnter(this, " \nhas left the chat ! ");
 
@@ -70,6 +102,7 @@ public class Clients implements Runnable {
     }
 
     public void closeEverything(Socket socket, DataInputStream dataInputStream, DataOutputStream dataOutputStream,DataInputStream dataInputStream2,DataOutputStream dataOutputStream2){
+        removeClient();
         try {
             if (dataInputStream !=null){
                 dataInputStream.close();

@@ -22,8 +22,13 @@ public class LoginFormFormController {
         URL resource = getClass().getResource("../view/ClientForm.fxml");
         Parent load = FXMLLoader.load(resource);
         primaryStage.setScene(new Scene(load));
+        primaryStage.setTitle("Chat Application");
         primaryStage.show();
         txtUserName.clear();
         txtUserName.requestFocus();
+    }
+
+    public void txtLoginOnAction(ActionEvent actionEvent) throws IOException {
+        btnLogInAction(actionEvent);
     }
 }
