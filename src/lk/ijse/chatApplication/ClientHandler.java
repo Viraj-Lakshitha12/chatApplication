@@ -1,12 +1,10 @@
 package lk.ijse.chatApplication;
 
-import lk.ijse.chatApplication.controller.ClientFormController;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Clients implements Runnable {
+public class ClientHandler implements Runnable {
     private Socket socket;
     private Socket socket2;
     DataInputStream dataInputStream2;
@@ -15,8 +13,8 @@ public class Clients implements Runnable {
     DataInputStream dataInputStream;
     String clientUserName;
 
-    public static ArrayList<Clients> clients = new ArrayList<>();
-    public Clients(Socket socket,Socket socket2) {
+    public static ArrayList<ClientHandler> clients = new ArrayList<>();
+    public ClientHandler(Socket socket, Socket socket2) {
         try {
             this.socket = socket;
             this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
@@ -69,14 +67,14 @@ public class Clients implements Runnable {
         }).start();
     }
 
-    private void sendMessageClientImage(Clients client, int i, byte[] bytes) {
-        for (Clients clients1 : clients) {
+    private void sendMessageClientImage(ClientHandler client, int i, byte[] bytes) {
+        for (ClientHandler clientHandler1 : clients) {
             try {
-                if (clients1 != client) {
+                if (clientHandler1 != client) {
                     // clientHandler.dataOutputStream.writeUTF(clientUserName);
                     //   clientHandler.dataOutputStream.flush();
-                    clients1.dataOutputStream2.writeInt(i);
-                    clients1.dataOutputStream2.write(bytes);
+                    clientHandler1.dataOutputStream2.writeInt(i);
+                    clientHandler1.dataOutputStream2.write(bytes);
                 }
 
             } catch (IOException e) {
@@ -89,12 +87,12 @@ public class Clients implements Runnable {
         sendMessageClientEnter(this, " \nhas left the chat ! ");
 
     }
-    private void sendMessageClientEnter(Clients client, String messageTo) {
-        for (Clients clients1 : clients) {
+    private void sendMessageClientEnter(ClientHandler client, String messageTo) {
+        for (ClientHandler clientHandler1 : clients) {
             try {
-                if (clients1 != client) {
-                    clients1.dataOutputStream.writeUTF(clientUserName + " : " + messageTo);
-                    clients1.dataOutputStream.flush();
+                if (clientHandler1 != client) {
+                    clientHandler1.dataOutputStream.writeUTF(clientUserName + " : " + messageTo);
+                    clientHandler1.dataOutputStream.flush();
                 }
             } catch (IOException e) {
             }

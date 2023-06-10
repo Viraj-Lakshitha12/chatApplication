@@ -1,7 +1,7 @@
 package lk.ijse.chatApplication.controller;
 
 
-import lk.ijse.chatApplication.Clients;
+import lk.ijse.chatApplication.ClientHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -52,8 +52,8 @@ public class ServerFormController {
     public void startServer(){
                 while (true){
                     try {
-                        Clients clients = new Clients(serverSocket.accept(),serverSocket2.accept());
-                        Thread thread = new Thread(clients);
+                        ClientHandler clientHandler = new ClientHandler(serverSocket.accept(),serverSocket2.accept());
+                        Thread thread = new Thread(clientHandler);
                         thread.start();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
